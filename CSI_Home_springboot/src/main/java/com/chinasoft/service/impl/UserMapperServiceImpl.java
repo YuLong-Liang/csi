@@ -12,69 +12,47 @@ import com.chinasoft.pojo.User;
 import com.chinasoft.service.UserMapperService;
 
 @Service
-public class UserMapperServiceImpl implements UserMapperService {
+public  class UserMapperServiceImpl implements UserMapperService {
 	
 	@Autowired
-	UserMapper mapper;
+	UserMapper userMapper;
+
 
 	@Override
-	public User getUserById(int id) {
+	public List<User> selectAllUser(User user) {
+	    
+		List<User> users = userMapper.selectAllUser(user);
+
+		return users;
+	}
+	@Override
+	public List<User> selectPreUser() {
 		// TODO Auto-generated method stub
-//		System.out.println("����impl");
-		User user = mapper.selectUserById(id);
-//		System.out.println("impl_Selecteduser="+user);
-		return user;
+	    List<User> users = userMapper.selectPreUser();
+
+		return users;
 	}
 	
 	@Override
-	public List<User> getAllUser() {
+	public void addUser(User user) {
 		// TODO Auto-generated method stub
-//		System.out.println("����impl");
-		List<User> users = mapper.selectAllUser();
-//		System.out.println("impl_Alluser="+users);
-		return users;
+		userMapper.addUser(user);
 	}
-
+	
 	@Override
-	public void insertUser(User user) {
+	public void updateUser(User user) {
 		// TODO Auto-generated method stub
-//		System.out.println("����impl");
-		mapper.addUserByParameter(user);
-//		System.out.println("impl_InsertUser="+user);
+		userMapper.updateUser(user);
 	}
-
+	
 	@Override
-	public void deleteUserById(int id) {
+	public void deleteUser(long id) {
 		// TODO Auto-generated method stub
-//		System.out.println("����impl");
-		mapper.deleteUserById(id);
-//		System.out.println("impl_deleteUserId="+id);
+		userMapper.deleteUser(id);
 	}
-
-	public void updateUserById(User user, int id) {
-		// TODO Auto-generated method stub
-//		System.out.println("����impl");
-		mapper.updateUserById(user, id);
-//		System.out.println("impl_updateUserById = "+id);
-	}
+	
 
 
-	@Override
-	public List<User> selectAllOne(int c_id) {
-		// TODO Auto-generated method stub
-//		System.out.println("����impl");
-		List<User> users = mapper.selectAllOne(c_id);
-//		System.out.println("c_id="+c_id+"users="+users);
-		return users;
-	}
-
-	public Department selectDepartmentUser(int id) {
-		// TODO Auto-generated method stub
-		System.out.println("����impl");
-		Department department = mapper.selectDepartmentUser(id); 
-		System.out.println("id="+id+"department="+department);
-		return department;
-	}
 	
 	
 	
