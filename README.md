@@ -6,5 +6,5 @@
 
 ### 项目截图
 
-![项目图片](http://ww1.sinaimg.cn/large/005T39qaly1gjsf5y67a6j311k0igt9r.jpg)
+![项目图片](http://ww1.sinaimg.cn/large/005T39qaly1gjsfc598ucj311c0exaam.jpg)
 
