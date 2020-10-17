@@ -64,8 +64,11 @@ public class NoticeMapperController {
 		
 	@RequestMapping("/selectAllNoticeByNotice")
 	@ResponseBody 
-	public List<notice> selectAllNoticeByNotice() {
-		notice notice = new notice("1","1");
+	public List<notice> selectAllNoticeByNotice(@Param("title")String title
+			,@Param("content")String content) {
+		System.out.println(title);
+		System.out.println(content);
+		notice notice = new notice(title,content);
 		List<notice> notices = service.selectAllNoticeByNotice(notice); 
 		return notices; 
 	}

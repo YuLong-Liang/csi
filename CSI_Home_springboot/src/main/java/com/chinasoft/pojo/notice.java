@@ -50,6 +50,12 @@ public class notice {
 		super();
 	}
 	
+	
+	public notice(String tITLE, String cONTENT) {
+		super();
+		TITLE = tITLE;
+		CONTENT = cONTENT;
+	}
 	public notice(String tITLE, String cONTENT, Timestamp cREATE_DATE, int uSER_ID) {
 		super();
 		TITLE = tITLE;
@@ -58,11 +64,7 @@ public class notice {
 		USER_ID = uSER_ID;
 	}
 	
-	public notice(String tITLE, String cONTENT) {
-		super();
-		TITLE = tITLE;
-		CONTENT = cONTENT;
-	}
+	
 	public notice(int uSER_ID) {
 		super();
 		USER_ID = uSER_ID;

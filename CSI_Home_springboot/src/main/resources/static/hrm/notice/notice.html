@@ -21,46 +21,91 @@
 	<link href="../css/pager.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript">
 	
+	
 	<!--获取服务名称-->
-	function queryNotices(){
-		$("#allnotices").html("");
-		$.get("/notice/selectAllNoticeNoParam",function(result,status){
-			allNoticeDatas = result;
-            var opt = '<tbody id="listbody"><tr class="main_trbg_tit" align="center"><td><input type="checkbox" name="checkAll" id="checkAll"></td><td>'
-            +"公告名称</td><td>"
-			+"公告内容</td><td>"
-			+"创建时间</td><td>"
-			+"公告人</td>"
-			+'<td align="center" width="40px;">'
-			+'修改</td>'
-			+'<td align="center" width="40px;">'
-			+'预览</td>';
+	function queryNotices(param){
+		switch(param){
+		case "selectAllNoticeByNotice" :
+			var title = $("#title");
+	    	var content = $("#content");
+	    	title = $.trim(title.val());
+	    	content = $.trim(content.val());
+			$("#allnotices").html("");
+			$.get("/notice/"+param+"?title="+title+"&content="+content,function(result,status){
+				allNoticeDatas = result;
+	            var opt = '<tbody id="listbody"><tr class="main_trbg_tit" align="center"><td><input type="checkbox" name="checkAll" id="checkAll"></td><td>'
+	            +"公告名称</td><td>"
+				+"公告内容</td><td>"
+				+"创建时间</td><td>"
+				+"公告人</td>"
+				+'<td align="center" width="40px;">'
+				+'修改</td>'
+				+'<td align="center" width="40px;">'
+				+'预览</td>';
+
+	            var length = result.length;
+	            for ( i = 0; i < length; i++) {
+	                var noticeID = result[i].id; //获取公告ID
+	                var noticeTITLE = result[i].title;//获取公告TITLE
+	                var noticeCONTENT = result[i].content; //获取公告CONTENT
+	                var noticeCREATE_DATE = result[i].create_DATE;//获取公告CREATE_DATE
+	                var noticeUSER_ID = result[i].user_ID; //获取公告USER_ID
+	                opt = opt +'<tr id="data_'+i+'" align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">'
+	                +'<td><input type="checkbox" name="items" id="box_'+i+'" value="'+noticeID+'"></td><td>' 
+					+noticeTITLE+"</td><td>"
+					+noticeCONTENT+"</td><td>"
+					+noticeCREATE_DATE+"</td><td>"
+					+noticeUSER_ID+"</td>"
+					+'<td align="center" width="40px;"><a href="showUpdateNotice.html?noticeID='+noticeID+'" id="update_'+noticeID+'">'
+					+'<img title="修改" src="../images/update.gif"></a></td>'
+					+'<td align="center" width="40px;"><a href="#" id="prev_'+noticeID+'">'
+					+'<img title="预览" src="../images/prev.gif"></a></td>';
+			      }
+	            opt+="</tbody>";
+	            $("#allnotices").html($("#allnotices").html+opt);
+	    	});
+			break;
 			
 			
-			
-			
-            var length = result.length;
-            for ( i = 0; i < length; i++) {
-                var noticeID = result[i].id; //获取公告ID
-                var noticeTITLE = result[i].title;//获取公告TITLE
-                var noticeCONTENT = result[i].content; //获取公告CONTENT
-                var noticeCREATE_DATE = result[i].create_DATE;//获取公告CREATE_DATE
-                var noticeUSER_ID = result[i].user_ID; //获取公告USER_ID
-                opt = opt +'<tr id="data_'+i+'" align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">'
-                +'<td><input type="checkbox" name="items" id="box_'+i+'" value="'+noticeID+'"></td><td>' 
-				+noticeTITLE+"</td><td>"
-				+noticeCONTENT+"</td><td>"
-				+noticeCREATE_DATE+"</td><td>"
-				+noticeUSER_ID+"</td>"
-				+'<td align="center" width="40px;"><a href="showUpdateNotice.html?noticeID='+noticeID+'" id="update_'+noticeID+'">'
-				+'<img title="修改" src="../images/update.gif"></a></td>'
-				+'<td align="center" width="40px;"><a href="#" id="prev_'+noticeID+'">'
-				+'<img title="预览" src="../images/prev.gif"></a></td>';
-		      }
-            opt+="</tbody>";
-            $("#allnotices").html($("#allnotices").html+opt);
-            //console.log(opt);
-    	});
+		case "selectAllNoticeNoParam":
+			$("#allnotices").html("");
+			$.get("/notice/"+param,function(result,status){
+				allNoticeDatas = result;
+	            var opt = '<tbody id="listbody"><tr class="main_trbg_tit" align="center"><td><input type="checkbox" name="checkAll" id="checkAll"></td><td>'
+	            +"公告名称</td><td>"
+				+"公告内容</td><td>"
+				+"创建时间</td><td>"
+				+"公告人</td>"
+				+'<td align="center" width="40px;">'
+				+'修改</td>'
+				+'<td align="center" width="40px;">'
+				+'预览</td>';
+
+	            var length = result.length;
+	            for ( i = 0; i < length; i++) {
+	                var noticeID = result[i].id; //获取公告ID
+	                var noticeTITLE = result[i].title;//获取公告TITLE
+	                var noticeCONTENT = result[i].content; //获取公告CONTENT
+	                var noticeCREATE_DATE = result[i].create_DATE;//获取公告CREATE_DATE
+	                var noticeUSER_ID = result[i].user_ID; //获取公告USER_ID
+	                opt = opt +'<tr id="data_'+i+'" align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">'
+	                +'<td><input type="checkbox" name="items" id="box_'+i+'" value="'+noticeID+'"></td><td>' 
+					+noticeTITLE+"</td><td>"
+					+noticeCONTENT+"</td><td>"
+					+noticeCREATE_DATE+"</td><td>"
+					+noticeUSER_ID+"</td>"
+					+'<td align="center" width="40px;"><a href="showUpdateNotice.html?noticeID='+noticeID+'" id="update_'+noticeID+'">'
+					+'<img title="修改" src="../images/update.gif"></a></td>'
+					+'<td align="center" width="40px;"><a href="#" id="prev_'+noticeID+'">'
+					+'<img title="预览" src="../images/prev.gif"></a></td>';
+			      }
+	            opt+="</tbody>";
+	            $("#allnotices").html($("#allnotices").html+opt);
+	    	});
+			break;
+		}
+		
+		
 	}
 	
 	function tounicode(data)
@@ -69,115 +114,71 @@
 	    return encodeURIComponent(encodeURIComponent(data)); //编译了两次,后台需转码
 	}
 	
-	var allNoticeDatas;
+	//######################################
+	//######################################
+		var allNoticeDatas;
 		/* 初始化加载函数 */
-		queryNotices();
-
-			
-	setTimeout(function(){
-			$(function(){
-			/** 获取上一次选中的部门数据 */
-	 	   	var boxs = $("input[type='checkbox'][id^='box_']");
-			document.getElementById("checkAll").addEventListener("click", function(){
-		 	  	// this是checkAll  this.checked是true
-	    		// 所有数据行的选中状态与全选的状态一致
-	    		var boxs = document.getElementsByName('items');
-	    		for(var i=0;i<boxs.length;i++){
-					var box=boxs[i];
-					box.checked = !box.checked;
-	    		} 
-	 	  	 }); 
-	    	
-	 	  	/** 给数据行绑定鼠标覆盖以及鼠标移开事件  */
-	    	$("tr[id^='data_']").hover(function(){
-	    		$(this).css("backgroundColor","#eeccff");
-	    	},function(){
-	    		$(this).css("backgroundColor","#ffffff");
-	    	})
-	    	
-	    	/** 搜索公告绑定点击事件 */
-	 	   	$("#select").click(function(){
-		 	   	var title=document.getElementsByName("title");
-		 	   	var content=document.getElementsByName("content");
-		 	   	
-		 	   	
-	 	   	});
-	    	
-	 	   	/** 删除公告绑定点击事件 */
-	 	   	$("#delete").click(function(){
-	 		   /** 获取到公告选中的复选框  */
-	 		   var checkedBoxs = boxs.filter(":checked");
-	 		   if(checkedBoxs.length < 1){
-	 			   $.ligerDialog.error("请选择一个需要删除的公告！");
-	 		   }else{
-	 			   /** 得到公告选中的所有的需要删除的ids */
-	 			   var ids = checkedBoxs.map(function(){
-	 				   return this.value;
-	 			   })
-	 			   $.ligerDialog.confirm("确认要删除吗?","删除公告",function(r){
-	 				   if(r){
-	 					  ids = $.makeArray(ids);
-	 					  $.ajax({
- 						    async : false,
- 						    cache : false,
- 						    type : 'POST',
-			                url: "/notice/batchDeleteNotices",
-			                data: {IDs:ids},
-			                type: "Post",
-			                dataType: "json",
-			                traditional:true,
-			                error : function() {
-			                	  alert('删除失败 ');
-			                	 },
-			                success: function (data) {
-			                	alert(data);
-			                    if (data > 0) {
-			                    	console.log("重新刷新页面");
-			                    	window.location.reload();
-			                    } else {
-			                        alter("删除失败");
-			                    }
-			                }
-	 					  }); 
-	 				   }
-	 			   });
-	 		   }
-	 	   })
-		
-	 	   			 	   	
-			/** 给预览绑定点击事件 */
-			$("a[id^='prev_'").click(function(){
-				var noticeId = this.id.replace('prev_','');
-				var title;
-				var content;
-				for( i=0;i<allNoticeDatas.length;i++){
-					if(allNoticeDatas[i].id == noticeId){
-						title = allNoticeDatas[i].title;
-						content = allNoticeDatas[i].content;
-					}
-				}
-			    title = escape(title);
-			    content = escape(content);
-			    
-				$.ligerDialog.open({ 
-					title:'预览公告',
-					height: 500, 
-					url: 'previewNotice.html?title='+title+'&content='+content,
-					width: 750, 
-					showMax: true, 
-					showToggle: true, 
-					showMin: true, 
-					isResize: true, 
-					slide: false 
-					});
-			})
-			//分页
-			goPage(1,20);
-	 	   	
-	 	   	
-		 })
-	},1000);
+		queryNotices("selectAllNoticeNoParam");
+		registerListener();
 	
+		
+	//数据展示表格、每行数据注册监听
+	function registerListener(){
+		setTimeout(function(){
+				$(function(){
+				/** 获取上一次选中的部门数据 */
+		 	   	var boxs = $("input[type='checkbox'][id^='box_']");
+				document.getElementById("checkAll").addEventListener("click", function(){
+			 	  	// this是checkAll  this.checked是true
+		    		// 所有数据行的选中状态与全选的状态一致
+		    		var boxs = document.getElementsByName('items');
+		    		for(var i=0;i<boxs.length;i++){
+						var box=boxs[i];
+						box.checked = !box.checked;
+		    		} 
+		 	  	 }); 
+		    	
+		 	  	/** 给数据行绑定鼠标覆盖以及鼠标移开事件  */
+		    	$("tr[id^='data_']").hover(function(){
+		    		$(this).css("backgroundColor","#eeccff");
+		    	},function(){
+		    		$(this).css("backgroundColor","#ffffff");
+		    	})
+		    	
+		 	   			 	   	
+				/** 给预览绑定点击事件 */
+				$("a[id^='prev_'").click(function(){
+					var noticeId = this.id.replace('prev_','');
+					var title;
+					var content;
+					for( i=0;i<allNoticeDatas.length;i++){
+						if(allNoticeDatas[i].id == noticeId){
+							title = allNoticeDatas[i].title;
+							content = allNoticeDatas[i].content;
+						}
+					}
+				    title = escape(title);
+				    content = escape(content);
+				    
+					$.ligerDialog.open({ 
+						title:'预览公告',
+						height: 500, 
+						url: 'previewNotice.html?title='+title+'&content='+content,
+						width: 750, 
+						showMax: true, 
+						showToggle: true, 
+						showMin: true, 
+						isResize: true, 
+						slide: false 
+						});
+				})
+				//分页
+				goPage(1,20);
+		 	   	
+		 	   	
+			 })
+		},1000);
+	}
 	//----------------------------------分页
 	var pageSize=10;//每页显示行数
 	var currentPage_=1;//当前页全局变量，用于跳转时判断是否在相同页，在就不跳，否则跳转。
@@ -214,7 +215,7 @@
 	 
 		$("#listbody tr").hide();
 		$("#listbody tr").eq(0).show();
-		console.log("AA");
+		console.log("数据分页");
 		for(var i=startRow;i<endRow+1;i++)
 		{
 			$("#listbody tr").eq(i).show();
@@ -313,6 +314,7 @@
 		}
 	}
 	
+	
 
 	</script>
 </head>
@@ -338,9 +340,9 @@
 				    <table width="100%" border="0" cellpadding="0" cellspacing="0">
 					  <tr>
 					    <td class="font3">
-					    	公告名称：<input type="text" name="title">
-					    	公告内容：<input type="text" name="content">
-					    	 <input id="select" type="submit" value="搜索"/>
+					    	公告名称：<input type="text" id="title" name="title">
+					    	公告内容：<input type="text" id="content" name="content">
+					    	<input id="selectByParam" type="button" value="搜索"/>
 					    	<input id="delete" type="button" value="删除"/>
 					    </td>
 					  </tr>
@@ -394,4 +396,85 @@
 	</table>
 	<div style="height:10px;"></div>
 </body>
+<script>
+	
+	var boxs;
+	setTimeout(function(){
+		boxs = $("input[type='checkbox'][id^='box_']");
+		
+		},1000);
+	
+/** 搜索公告绑定点击事件 */
+   	$("#selectByParam").click(function(){
+   		console.log("点击查找按钮");
+	var title = $("#title");
+	var content = $("#content");
+	var msg = "";
+	if ($.trim(title.val()) == ""){
+		msg = "公告标题不能为空！";
+		title.focus();
+	}
+	else if($.trim(title.val()).length <= 2){
+		msg = "请输入两个字符以上的标题！";
+		title.focus();
+	}
+	else if($.trim(content.val()) == ""){
+		msg = "公告内容不能为空！";
+		content.focus();
+	}
+	if (msg != ""){
+		$.ligerDialog.error(msg);
+		return false;
+	}else{
+		console.log("内容合法、查找有参数");
+		queryNotices("selectAllNoticeByNotice");
+		registerListener();
+		return true;
+	}
+   });
+
+   	/** 删除公告绑定点击事件 */
+   	$("#delete").click(function(){
+	   /** 获取到公告选中的复选框  */
+	   boxs = $("input[type='checkbox'][id^='box_']");
+	   console.log(boxs);
+	   var checkedBoxs = boxs.filter(":checked");
+	   console.log(checkedBoxs);
+	   if(checkedBoxs.length < 1){
+		   $.ligerDialog.error("请选择一个需要删除的公告！");
+	   }else{
+		   /** 得到公告选中的所有的需要删除的ids */
+		   var ids = checkedBoxs.map(function(){
+			   return this.value;
+		   })
+		   $.ligerDialog.confirm("确认要删除吗?","删除公告",function(r){
+			   if(r){
+				  ids = $.makeArray(ids);
+				  $.ajax({
+				    async : false,
+				    cache : false,
+				    type : 'POST',
+                url: "/notice/batchDeleteNotices",
+                data: {IDs:ids},
+                type: "Post",
+                dataType: "json",
+                traditional:true,
+                error : function() {
+                	  alert('删除失败 ');
+                	 },
+                success: function (data) {
+                	alert(data);
+                    if (data > 0) {
+                    	console.log("重新刷新页面");
+                    	window.location.reload();
+                    } else {
+                        alter("删除失败");
+                    }
+                }
+				  }); 
+			   }
+		   });
+	   }
+   })
+</script>
 </html>
