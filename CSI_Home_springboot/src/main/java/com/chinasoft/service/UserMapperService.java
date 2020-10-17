@@ -9,19 +9,15 @@ import com.chinasoft.pojo.Department;
 import com.chinasoft.pojo.User;
 
 public interface UserMapperService {
-
-	User getUserById(int id);
 	
-	List getAllUser();
+	List<User> selectAllUser(User user);
 	
-	//实现插入返回int
-	void insertUser(User user);
+	List<User> selectPreUser();
 	
-	void deleteUserById(int id);
+	void addUser(User user);
 	
-	void updateUserById(User user, int id);
+	void updateUser(User user);
 	
-	List<User> selectAllOne(int c_id);
+    void deleteUser(long id);
 	
-	public Department selectDepartmentUser(int id);
 }

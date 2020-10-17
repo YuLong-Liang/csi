@@ -24,10 +24,16 @@
 
     	/** 员工表单提交 */
 		function submit(){
+			
 			var username = $("#username");
 			var status = $("#status");
 			var loginname = $("#loginname");
-			var password = $("#password");
+			var password =$("#password");
+			var statusValue =  document.getElementById("status").value;
+			var loginnameValue =  document.getElementById("loginname").value;
+			var usernameValue =  document.getElementById("username").value;
+			var passwordValue =  document.getElementById("password").value;
+		
 			var msg = "";
 			if ($.trim(username.val()) == ""){
 				msg = "姓名不能为空！";
@@ -44,13 +50,25 @@
 			}
 			if (msg != ""){
 				$.ligerDialog.error(msg);
-				return false;
+				
 			}else{
 				//#####need Post("addUser");
-				return true;
-			}
+				$.post("/user/addUser?",
+                 {
+                   username:usernameValue,
+                   status:statusValue,
+                   loginname:loginnameValue,
+                   password:passwordValue,
+
+                 },
+                function(){
+                   
+                });
+				
+		    }
 			//$("#userForm").submit();
 		}
+
  
 		
 

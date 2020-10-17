@@ -20,7 +20,50 @@
 	<link href="../css/pager.css" type="text/css" rel="stylesheet" />
 	
 	<script type="text/javascript">
+		function queryUsers(){
+
+		$.get("/user/selectPreUser",function(result){
+            var opt = '<tbody><tr class="main_trbg_tit" align="center"><td><input type="checkbox" name="checkAll" id="checkAll" value="0"></td><td>'
+            +"登录名</td><td>"
+			+"密码</td><td>"
+			+"用户名</td><td>"
+			+"状态</td><td>"
+			+"创建时间</td>"
+			+'<td align="center" width="40px;">操作</td>';
+
+			
+            var length = result.length;
+            console.log(result);
+            for ( i = 0; i < length; i++) {
+                var loginname = result[i].loginname; //获取登陆名
+                var password = result[i].password;//获取密码
+                var status = result[i].status; //获取状态
+                var username = result[i].username;//获取用户名
+                var createdate = result[i].createdate; //获取创建时间
+                var id = result[i].id;//获取id
+                opt = opt +'<tr align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">'
+                +'<td><input type="checkbox" id="box_'+i+'" value="'+id+'"></td><td>' 
+                +loginname+"</td><td>"
+				+password+"</td><td>"
+				+username+"</td><td>"
+				+status+"</td><td>"
+				+createdate+"</td>"
+				+'<td align="center" width="40px;"><a href="showUpdateUser.html?id='+id
+				+'">'
+				+'<img title="修改" src="../images/update.gif"></a></td>';
+		      }
+            opt+="</tbody>";
+            $("#allnotices").html($("#allnotices").html+opt);
+            console.log(opt);
+    	});
+	}
+   
+    
+   
+
 		$(function(){
+			/*初始化*/
+		   queryUsers();
 	 	   /** 获取上一次选中的部门数据 */
 	 	   var boxs  = $("input[type='checkbox'][id^='box_']");
 	 	   
@@ -30,29 +73,98 @@
 	    	},function(){
 	    		$(this).css("backgroundColor","#ffffff");
 	    	})
-	    
+	       /*sumbit绑定事件*/
+
 	    	
+
 	 	   /** 删除员工绑定点击事件 */
 	 	   $("#delete").click(function(){
 	 		   /** 获取到用户选中的复选框  */
-	 		   var checkedBoxs = boxs.filter(":checked");
-	 		   if(checkedBoxs.length < 1){
+	 		   var vals = [];
+               $('input:checkbox:checked').each(function (index, item) {        
+               	vals.push($(this).val());
+               });
+               console.log(vals);
+	 		   if(vals.length < 1){
 	 			   $.ligerDialog.error("请选择一个需要删除的用户！");
 	 		   }else{
 	 			   /** 得到用户选中的所有的需要删除的ids */
-	 			   var ids = checkedBoxs.map(function(){
-	 				   return this.value;
-	 			   })
-	 			   
+	 			   		   
 	 			   $.ligerDialog.confirm("确认要删除吗?","删除用户",function(r){
 	 				   if(r){
 	 					   // alert("删除："+ids.get());
 	 					   // 发送请求
 	 					  // window.location = "${ctx }/user/removeUser?ids=" + ids.get();
+                        jQuery.ajax({
+                            type:"post",
+                            url:"/user/deleteUser",
+                            data:JSON.stringify(vals),
+                            dataType:"json",
+                            contentType: 'application/json;charset=utf-8',
+                            success:function(result) {
+                            if("0" == result.code) {    //提交数据返回成功
+                                                       // TODO 成功处理
+                              } else {                  //提交数据返回失败
+                                                     // TODO 失败处理
+                              }
+                            },
+                            error:function() {            //ajax提交失败
+                              console.log("error");
+                            }
+                         
+                          });
+                         
+
 	 				   }
 	 			   });
 	 		   }
 	 	   })
+
+
+	 	   $("#search").click(function(){
+            var username =  document.getElementById("username").value;
+            var obj =  document.getElementById("select");
+            var index = obj.selectedIndex;
+            var value = obj.options[index].value;
+            console.log(username)
+            $.get("/user/selectAllUser?username="+username+"&status="+value,function(result){
+            var opt = '<tbody><tr class="main_trbg_tit" align="center"><td><input type="checkbox" name="checkAll" id="checkAll" value="0"></td><td>'
+            +"登录名</td><td>"
+			+"密码</td><td>"
+			+"用户名</td><td>"
+			+"状态</td><td>"
+			+"创建时间</td>"
+			+'<td align="center" width="40px;">操作</td>';
+
+			
+            var length = result.length;
+            console.log(result);
+            for ( i = 0; i < length; i++) {
+                var loginname = result[i].loginname; //获取登陆名
+                var password = result[i].password;//获取密码
+                var status = result[i].status; //获取状态
+                var username = result[i].username;//获取用户名
+                var createdate = result[i].createdate; //获取创建时间
+                var id = result[i].id;//获取id
+                opt = opt +'<tr align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">'
+                +'<td><input type="checkbox" id="box_'+i+'" value="'+id+'"></td><td>' 
+                +loginname+"</td><td>"
+				+password+"</td><td>"
+				+username+"</td><td>"
+				+status+"</td><td>"
+				+createdate+"</td>"
+				+'<td align="center" width="40px;"><a href="showUpdateUser.html?id='+id
+				+'">'
+				+'<img title="修改" src="../images/update.gif"></a></td>';
+		      }
+            opt+="</tbody>";
+            $("#allnotices").html($("#allnotices").html+opt);
+         
+            console.log(opt);
+    	  }); 
+
+	 	})
+
 	    })
 
 	</script>
@@ -79,14 +191,15 @@
 				    <table width="100%" border="0" cellpadding="0" cellspacing="0">
 					  <tr>
 					    <td class="font3">
-					    	用户名：<input type="text" name="username">
-					    	用户状态：<select name="status">
-					    			<option value="">全部</option>
+					  
+					           用户名：<input type="text" name="username" id="username">
+					    	  用户状态：<select name="status" id="select">
+					    			<option value="0">全部</option>
 									<option value="1">管理员</option>
 									<option value="2">普通用户</option>
 									</select>
-					    	 <input type="submit" value="搜索"/>
-					    	<input id="delete" type="button" value="删除"/>
+					    	 <input  id="search" type="button" value="搜索"/>
+					    	 <input id="delete" type="button" value="删除"/>
 					    </td>
 					  </tr>
 					</table>
@@ -100,7 +213,7 @@
 	  <!-- 数据展示区 -->
 	  <tr valign="top">
 	    <td height="20">
-		  <table width="100%" border="1" cellpadding="5" cellspacing="0" style="border:#c2c6cc 1px solid; border-collapse:collapse;">
+		  <table id="allnotices" width="100%" border="1" cellpadding="5" cellspacing="0" style="border:#c2c6cc 1px solid; border-collapse:collapse;">
 		    <tbody><tr class="main_trbg_tit" align="center">
 			  <td><input type="checkbox" name="checkAll" id="checkAll"></td>
 			  <td>登录名</td>
