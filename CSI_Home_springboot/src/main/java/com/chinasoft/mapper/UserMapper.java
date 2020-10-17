@@ -8,19 +8,14 @@ import com.chinasoft.pojo.Department;
 import com.chinasoft.pojo.User;
 
 public interface UserMapper {
-
-	User selectUserById(@Param("id")int id);
 	
-	List<User> selectAllUser();
+	List<User> selectAllUser(User user);
 	
-	void addUserByParameter(@Param("user")User user);
+	List<User> selectPreUser();
 	
-//	
-	void deleteUserById(@Param("id")int id);
+	void addUser(User user);
 	
-	void updateUserById(@Param("user")User user,@Param("id")int id);
+	void updateUser(User user);
 	
-	List<User> selectAllOne(@Param("c_id")int c_id);
-	
-	Department selectDepartmentUser(@Param("id")int id);
+	void deleteUser(long id);
 }

@@ -4,211 +4,45 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chinasoft.mapper.UserMapper">
 
-    <select id="selectUserById" parameterType="int" resultType="com.chinasoft.pojo.User">
-        select * from user where id = #{id}
-    </select>
     
     <!--查询所有的用户信息  -->
-    <select id="selectAllUser" resultType="com.chinasoft.pojo.User">
-       select * from user
+    <select id="selectAllUser" parameterType="com.chinasoft.pojo.User" resultType="com.chinasoft.pojo.User">
+       select * from user_inf 
+       where 
+       <if test="username != null">
+          username=#{username}
+       </if>
+       <if test="status != null">
+          and status=#{status}
+       </if>
     </select>
+     <!--查询所有的用户信息  -->
+    <select id="selectPreUser" resultType="com.chinasoft.pojo.User">
+       select * from user_inf
+
+    </select>
+    
 
 
-    <insert id="addUser">
-        insert into user(id,username,password,phone,address,email,c_id)
-        values(2,'admin1','222222','135222222','重庆南山','22222@qq.com',1);
+    <insert id="addUser"  parameterType="com.chinasoft.pojo.User">
+        insert into user_inf(id,loginname,password,status,createdate,username,faceurl,facepath)
+        values(#{id},#{loginname},#{password},#{status},#{createdate},#{username},#{faceurl},#{facepath});
     </insert>
 
-    <!--添加用户有参数的 -->
-    <insert id="addUserByParameter" parameterType="com.chinasoft.pojo.User">
-        insert into user(id,username,password,phone,address,email,c_id)
-        values(#{user.id},#{user.username},#{user.password},#{user.phone},#{user.address},#{user.email},#{user.c_id});
-    </insert>
+   
 
 	<!--删除一条带参数记录-->
-    <delete id="deleteUserById" parameterType="int" >
-        DELETE FROM user WHERE id=#{id};
+    <delete id="deleteUser" parameterType="long" >
+        DELETE FROM user_inf WHERE id=#{id};
     </delete>
     
     <!--更新一条带参数记录-->
-   	<update id="updateUserById">
-        UPDATE user
-        SET id=#{user.id},username=#{user.username},password=#{user.password},phone=#{user.phone},address=#{user.address},email=#{user.email},c_id=#{user.c_id}
+   	<update id="updateUser"  parameterType="com.chinasoft.pojo.User">
+        UPDATE user_inf
+        SET username='${username}' , loginname='${loginname}' , status='${status}'
        	where id=#{id};
     </update>
 
-    <!--查询一个用户有参数的  -->
-    <select id="selectUserByParameter" resultType="com.chinasoft.pojo.User" parameterType="Integer">
-        select * from user where id = #{id}
-    </select>
-
-    <!--按指定关键字排序-->
-    <select id="selectOrderBy" parameterType="string" resultType="com.chinasoft.pojo.User">
-        select * from user order by ${column}
-    </select>
-
-
-
-    <!--按关键字找指定用户记录-->
-    <!-- <select id="selectUserByPara" parameterType="string" resultType="com.chinasoft.pojo.User">-->
-        <!-- select * from user where ${column} = #{value} -->
-    <!-- </select>  -->
-
-    <select id="SelectAllU" resultMap="AllUser">
-        select * from user
-    </select>
-
-    <resultMap id="AllUser" type="com.chinasoft.pojo.User">
-        <result column="password" property="pwd"/>
-    </resultMap>
-
-    <!-- ①多对一的嵌套结果:查找用户表、按部门号查找用户表 -->
-    <select id="selectAllOne" parameterType="int" resultMap="UserOneAll1">
-		select * from user,department where user.c_id=department.id and user.c_id=#{c_id}
-    </select>
-    <resultMap type="user" id="UserOneAll1">
-        <id column="id" property="id"/>
-        <result column="username" property="username"/>
-        <result column="password" property="password"/>
-        <result column="phone" property="phone"/>
-        <result column="address" property="address"/>
-        <result column="email" property="email"/>
-        <result column="c_id" property="c_id"/>
-        <association property="department" javaType="department">
-            <result column="id" property="id"/>
-            <result column="info" property="info"/>
-            <result column="obligation" property="obligation"/>
-            <result column="manager" property="manager"/>
-        </association>
-    </resultMap>
-
-     <!--②多对一的嵌套结果 -->
-    <select id="selectOneAll2" parameterType="int" resultMap="UserOneAll2">
-        select * from user where id=#{id}
-    </select>
-    <resultMap type="user" id="UserOneAll2">
-        <id column="id" property="id"/>
-        <result column="username" property="username"/>
-        <result column="password" property="password"/>
-        <result column="phone" property="phone"/>
-        <result column="address" property="address"/>
-        <result column="email" property="email"/>
-        <result column="c_id" property="c_id"/>
-        <association property="department" column="id"
-        select="selectOneDepartment"/>
-    </resultMap>
-    <select id="selectOneDepartment" resultMap="DepartmentAll">
-        select * from department where id = #{id}
-    </select>
-    <resultMap id="DepartmentAll" type="department">
-        <id column="id" property="id"/>
-        <result column="info" property="info"/>
-        <result column="obligation" property="obligation"/>
-        <result column="manager" property="manager"/>
-    </resultMap>
-
-    <!--实现一对多 ①嵌套结果 按部门号查找用户表-->
-    <select id="selectDepartmentUser" parameterType="int"
-            resultMap="allDepartment1">
-        select
-            department.id as d_id,
-            department.info,
-            department.obligation,
-            department.manager,
-            user.*
-        from department,user where department.id = user.c_id
-        and department.id = #{id}
-    </select>
-    <resultMap id="allDepartment1" type="department">
-        <id column="d_id" property="id"/>
-        <id column="info" property="info"/>
-        <id column="obligation" property="obligation"/>
-        <collection property="list" ofType="user" javaType="ArrayList">
-            <id column="id" property="id"/>
-            <id column="username" property="username"/>
-            <id column="password" property="password"/>
-            <id column="phone" property="phone"/>
-            <id column="address" property="address"/>
-            <id column="email" property="email"/>
-            <id column="c_id" property="c_id"/>
-        </collection>
-    </resultMap>
-
-    <!--一对多 ②嵌套查询-->
-    <resultMap id="allDepartment2" type="department">
-        <id column="id" property="id"/>
-        <id column="info" property="info"/>
-        <id column="obligation" property="obligation"/>
-        <id column="manager" property="manager"/>
-        <collection property="list" javaType="ArrayList"
-                    column="id" ofType="user" select="selectUserForDepartment"/>
-    </resultMap>
-    <select id="selectDepartmentWithUser"
-            resultMap="allDepartment2" parameterType="int">
-        select * from department WHERE id = #{id}
-    </select>
-    <select id="selectUserForDepartment" resultType="user">
-        select * from user WHERE id = #{id}
-    </select>
-
-    <!-- ③多对一的嵌套结果:查找用户表、按部门号查找用户表 -->
-    <select id="selectAttendanceAll" parameterType="int" resultMap="UserOneAll3">
-        select *
-        from user,department,attendance
-        where user.c_id=department.id
-            and user.id = attendance.u_id
-            and attendance.c_id = #{id}
-    </select>
-    <resultMap type="attendance" id="UserOneAll3">
-        <id column="id" property="id"/>
-        <id column="c_id" property="c_id"/>
-        <id column="u_id" property="u_id"/>
-        <association property="user" javaType="user">
-            <result column="username" property="username"/>
-            <result column="password" property="password"/>
-            <result column="phone" property="phone"/>
-            <result column="address" property="address"/>
-            <result column="email" property="email"/>
-            <result column="c_id" property="c_id"/>
-        </association>
-        <association property="department" javaType="department">
-            <result column="id" property="id"/>
-            <result column="info" property="info"/>
-            <result column="obligation" property="obligation"/>
-            <result column="manager" property="manager"/>
-        </association>
-    </resultMap>
-
-
-    <!--一对多 ③嵌套查询-->
-    <resultMap id="allDepartment3" type="department">
-        <id column="id" property="id"/>
-        <id column="info" property="info"/>
-        <id column="obligation" property="obligation"/>
-        <id column="manager" property="manager"/>
-        <collection property="list" javaType="ArrayList"
-                    column="id" ofType="user" select="selectUserForDepartment3"/>
-    </resultMap>
-    <resultMap id="allUserOfDepartment" type="user">
-        <id column="id" property="id"/>
-        <id column="username" property="username"/>
-        <id column="password" property="password"/>
-        <id column="phone" property="phone"/>
-        <id column="address" property="address"/>
-        <id column="email" property="email"/>
-        <id column="c_id" property="c_id"/>
-        <collection property="attendances" javaType="ArrayList"
-                    column="id" ofType="attendance" select="selectAttendanceForUser"/>
-    </resultMap>
-    <select id="selectDepartmentWithUserWithAttendance"
-            resultMap="allDepartment3" parameterType="int">
-        select * from department WHERE id = #{id}
-    </select>
-    <select id="selectUserForDepartment3" resultMap="allUserOfDepartment">
-        select * from user WHERE c_id = #{id}
-    </select>
-    <select id="selectAttendanceForUser" resultType="attendance">
-        select * from attendance WHERE u_id = #{id}
-    </select>
+    
 
 </mapper>

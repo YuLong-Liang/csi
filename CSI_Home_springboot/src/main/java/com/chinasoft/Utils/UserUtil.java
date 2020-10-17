@@ -9,7 +9,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Test;
+
 
 import com.chinasoft.Utils.SqlSessionFactoryUtil;
 import com.chinasoft.pojo.User;
@@ -18,10 +18,10 @@ import com.chinasoft.pojo.User;
 
 
 public class UserUtil {
-//	²éÑ¯µ¥¸ö¼ÇÂ¼
-	@Test
+//	ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼
+	
     public static User selectUser() throws IOException {
-        // »ñµÃsqlSessionFactory
+        // ï¿½ï¿½ï¿½sqlSessionFactory
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSession session = SqlSessionFactoryUtil.openSqlSession();
@@ -31,10 +31,10 @@ public class UserUtil {
         session.close();
         return user;
     }
-//  ×¢½âÊµÏÖ+$ ºÍ# ÊµÏÖ Ö¸¶¨¹Ø¼ü×Ö²éÕÒ
+//  ×¢ï¿½ï¿½Êµï¿½ï¿½+$ ï¿½ï¿½# Êµï¿½ï¿½ Ö¸ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
 //  @Test
 //  public static User selectUserByPar(String column,String value) throws IOException {
-//      // »ñµÃsqlSessionFactory
+//      // ï¿½ï¿½ï¿½sqlSessionFactory
 //      String resource = "mybatis-config.xml";
 //      InputStream inputStream = Resources.getResourceAsStream(resource);
 //      SqlSession session = SqlSessionFactoryUtil.openSqlSession();
@@ -46,10 +46,10 @@ public class UserUtil {
 //      return user;
 //  }
 	
-//	²éÑ¯idË³Ðò ËùÓÐ¼ÇÂ¼
-	@Test
+//	ï¿½ï¿½Ñ¯idË³ï¿½ï¿½ ï¿½ï¿½ï¿½Ð¼ï¿½Â¼
+	
     public static List<User> selectAllUser() {
-        // »ñµÃsqlSessionFactory
+        // ï¿½ï¿½ï¿½sqlSessionFactory
         InputStream inputStream = null;
         SqlSession session = null;
         List<User> users = null;
@@ -81,10 +81,10 @@ public class UserUtil {
         return users;
     }
 	
-//    ½Ó¿ÚÊµÏÖ°´¹Ø¼ü×ÖÅÅÐò²éÕÒ
+//    ï¿½Ó¿ï¿½Êµï¿½Ö°ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //  @Test
 //  public static List<User> selectAllUser3(String column) {
-//      // »ñµÃsqlSessionFactory
+//      // ï¿½ï¿½ï¿½sqlSessionFactory
 //      InputStream inputStream = null;
 //      SqlSession session = null;
 //      List<User> users = null;
@@ -115,15 +115,15 @@ public class UserUtil {
 //      }
 //      return users;
 //  }
-//  °´²ÎÊýÔö¼Ó
-  @Test
+//  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
   public static Boolean addUserByParameter(User user) throws IOException {
-      // »ñµÃsqlSessionFactory
+      // ï¿½ï¿½ï¿½sqlSessionFactory
       String resource = "mybatis-config.xml";
       InputStream inputStream = Resources.getResourceAsStream(resource);
       SqlSession session = SqlSessionFactoryUtil.openSqlSession();
       int frag = session.insert("com.chinasoft.pojo.Interface.UserMapper.addUserByParameter",user);
-      // sessionÌá½» ÊÂÎñÌá½»
+      // sessionï¿½á½» ï¿½ï¿½ï¿½ï¿½ï¿½á½»
       session.commit();
       inputStream.close();
       session.close();
@@ -135,7 +135,7 @@ public class UserUtil {
   
 //  @Test
 //  public static void updateUserByParameter(User user,String column,String value) throws IOException {
-//      // »ñµÃsqlSessionFactorey
+//      // ï¿½ï¿½ï¿½sqlSessionFactorey
 //      String resource = "mybatis-config.xml";
 //      InputStream inputStream = Resources.getResourceAsStream(resource);
 //      SqlSession session = SqlSessionFactoryUtil.openSqlSession();
@@ -147,9 +147,9 @@ public class UserUtil {
 //      
 //  }
   
-  @Test
+
   public void deleteUserByParameter(int id) throws IOException {
-      // »ñµÃsqlSessionFactorey
+      // ï¿½ï¿½ï¿½sqlSessionFactorey
       String resource = "mybatis-config.xml";
       InputStream inputStream = Resources.getResourceAsStream(resource);
       SqlSession session = SqlSessionFactoryUtil.openSqlSession();
