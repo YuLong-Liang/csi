@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    
+    <script>
+    function showtable(data){
+        var html = '';
+        $.each(data,function (i,n) {
+            if(n.children == 0){
+                var th0 = '';
+                var a1 = n.atrr;
+                $.each(a1,function (k,j) {
+                    var a2 = j.atrr;
+                    if(j.children == 1){
+                        th0 += '<li><span>' + j.text + '</span></li><li class="inp"><input type="radio"  name="'+j.id+'"/>有<input type="radio" name="'+j.id+'"/>无</li>';
+                    }else{
+                        var th1='';
+                        $.each(a2,function(m,q){
+                            if(q.children == 1){
+                                th1 += '<li><span>' + q.text + '</span></li><li class="inp"><input type="radio"  name="'+q.id+'"/>有<input type="radio" name="'+q.id+'"/>无</li>';
+                            }
+                        });
+                        th0 +='<ul class="table-sub"><li><span>'+j.text+'</span></li><ul>'+th1+'</ul></ul>';
+                    }
+                });
+
+            }
+            html += '<ul class="table-style"><li><span>'+n.text+'</span></li><ul>'+th0+'</ul></ul>';
+        });
+        $('.text-table').html(html);
+	</script>
+</head>
+<body>
+
+	<div ng-app="myApp" ng-controller="formCtrl">
+  <form novalidate>
+    First Name:<br>
+    <input type="text" ng-model="user.firstName"><br>
+    Last Name:<br>
+    <input type="text" ng-model="user.lastName">
+    <br><br>
+    <button ng-click="reset()">RESET</button>
+  </form>
+  <p>form = {{user}}</p>
+  <p>master = {{master}}</p>
+</div>
+</body>
+</html>
