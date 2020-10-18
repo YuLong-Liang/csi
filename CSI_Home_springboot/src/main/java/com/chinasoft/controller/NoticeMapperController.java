@@ -118,7 +118,7 @@ public class NoticeMapperController {
 	@RequestMapping("/batchDeleteNotices")
 	@ResponseBody
 	public long batchDeleteNotices(@Param("IDs")String[] IDs) {
-		System.out.println(IDs);
+		System.out.println("ids="+IDs);
 		return service.batchDeleteNotices(IDs);
 	}
 	

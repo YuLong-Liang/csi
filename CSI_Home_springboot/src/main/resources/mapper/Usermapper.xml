@@ -22,6 +22,11 @@
 
     </select>
     
+    <select id="login" parameterType="user" resultType="user">
+		select *
+		 from user_inf  where  loginname=#{loginname} and password=#{password}
+	</select>
+    
 
 
     <insert id="addUser"  parameterType="com.chinasoft.pojo.User">

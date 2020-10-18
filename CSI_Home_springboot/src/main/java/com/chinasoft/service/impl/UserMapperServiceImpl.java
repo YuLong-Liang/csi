@@ -54,7 +54,13 @@ public  class UserMapperServiceImpl implements UserMapperService {
 
 
 	
-	
+	@Override
+	public User login(String loginname, String password) {
+		// TODO Auto-generated method stub
+		User user = userMapper.login(loginname, password);
+		return user;
+		
+	}
 	
 	
 

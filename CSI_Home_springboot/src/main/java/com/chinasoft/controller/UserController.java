@@ -7,9 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +39,21 @@ public class UserController {
 	UserMapperServiceImpl service;
 	private String url = "url";
 	private String path = "path";
+	
+	@RequestMapping("login")
+	@ResponseBody
+	public User login(HttpServletRequest request, HttpServletResponse response,
+            HttpSession session, Model model) {
+	
+		String loginname = request.getParameter("loginname");
+        String password = request.getParameter("password");
+		User user = service.login(loginname, password);
+		System.out.println(user);
+		if (user != null) {
+			session.setAttribute("user", user);
+		}
+		return user;
+	}
 	
 	@RequestMapping("/selectAllUser")
 	@ResponseBody

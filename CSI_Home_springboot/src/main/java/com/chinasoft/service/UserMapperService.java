@@ -19,5 +19,7 @@ public interface UserMapperService {
 	void updateUser(User user);
 	
     void deleteUser(long id);
+    
+    User login(String loginname,String password);
 	
 }

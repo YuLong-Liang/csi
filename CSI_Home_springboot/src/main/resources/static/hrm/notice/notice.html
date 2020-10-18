@@ -437,9 +437,9 @@
    	$("#delete").click(function(){
 	   /** 获取到公告选中的复选框  */
 	   boxs = $("input[type='checkbox'][id^='box_']");
-	   console.log(boxs);
+	   console.log("boxs="+boxs);
 	   var checkedBoxs = boxs.filter(":checked");
-	   console.log(checkedBoxs);
+	   console.log("checkBoxs="+checkedBoxs);
 	   if(checkedBoxs.length < 1){
 		   $.ligerDialog.error("请选择一个需要删除的公告！");
 	   }else{
@@ -447,6 +447,7 @@
 		   var ids = checkedBoxs.map(function(){
 			   return this.value;
 		   })
+		   console.log("ids="+ids);
 		   $.ligerDialog.confirm("确认要删除吗?","删除公告",function(r){
 			   if(r){
 				  ids = $.makeArray(ids);
