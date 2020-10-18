@@ -20,47 +20,217 @@
 	<script src="../js/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
 	<link href="../css/pager.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript">
-		$(function(){
-	 	   /** 获取上一次选中的部门数据 */
-	 	   var boxs  = $("input[type='checkbox'][id^='box_']");
-	 	   
-	 	  /** 给全选按钮绑定点击事件  */
-	    	$("#checkAll").click(function(){
-	    		// this是checkAll  this.checked是true
-	    		// 所有数据行的选中状态与全选的状态一致
-	    		boxs.attr("checked",this.checked);
-	    	})
-	    	
-	 	  /** 给数据行绑定鼠标覆盖以及鼠标移开事件  */
-	    	$("tr[id^='data_']").hover(function(){
-	    		$(this).css("backgroundColor","#eeccff");
-	    	},function(){
-	    		$(this).css("backgroundColor","#ffffff");
-	    	})
-	    	
-	    	
-	 	   /** 删除员工绑定点击事件 */
-	 	   $("#delete").click(function(){
-	 		   /** 获取到用户选中的复选框  */
-	 		   var checkedBoxs = boxs.filter(":checked");
-	 		   if(checkedBoxs.length < 1){
-	 			   $.ligerDialog.error("请选择一个需要删除的部门！");
-	 		   }else{
-	 			   /** 得到用户选中的所有的需要删除的ids */
-	 			   var ids = checkedBoxs.map(function(){
-	 				   return this.value;
-	 			   })
-	 			   
-	 			   $.ligerDialog.confirm("确认要删除吗?","删除部门",function(r){
-	 				   if(r){
-	 					   // alert("删除："+ids.get());
-	 					   // 发送请求
-	 					  // window.location = "${ctx }/dept/removeDept?ids=" + ids.get();
-	 				   }
-	 			   });
-	 		   }
-	 	   })
-	    })
+	console.log("script");
+	<!--获取服务名称-->
+	function queryNotices(param){
+		switch(param){
+		
+		case "selectdept" :
+			var title = $("#title");
+	    	//var content = $("#content");
+	    	title = $.trim(title.val());
+	    	//content = $.trim(content.val());
+	    	$("#alldepts").html("");
+		$.get("/dept/"+param+"?name="+title,function(result,status){
+			allDeptDatas = result;
+            var opt = '<tbody id="listbody"><tr class="main_trbg_tit" align="center"><td><input type="checkbox" name="checkAll" id="checkAll"></td><td>'
+            +"部门名称</td><td>"
+			+"详细信息</td><td>"
+			+"操作</td>";
+			
+            var length = result.length;
+            for ( i = 0; i < length; i++) {
+                var deptID = result[i].id; //获取部门ID
+                var deptNAME = result[i].name;//获取部门NAME
+                var deptREMARK = result[i].remark; //获取部门REMARK
+                var _t = encodeURI(deptNAME); 
+                var _tt = encodeURI(deptREMARK); 
+                console.log("dept1="+_t);
+                console.log("dept2="+_tt);
+                opt = opt +'<tr id="data_'+i+'" align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">'
+                +'<td><input type="checkbox" name="items" id="box_'+i+'" value="'+deptID+'"></td><td>' 
+				+deptNAME+"</td><td>"
+				+deptREMARK+"</td>"
+				+'<td align="center" width="40px;"><a href="showUpdateDept.html?id='+deptID+'&name='+_t+'&remark='+_tt+'">'
+				+'<img title="修改" src="../images/update.gif"></a></td>';
+		      }
+            opt+="</tbody>";
+            $("#alldepts").html($("#alldepts").html+opt);
+            console.log(opt);
+    	});
+		break;
+		
+		case "selectalldept" :
+			$("#alldepts").html("");
+			$.get("/dept/"+param,function(result,status){
+				allDeptDatas = result;
+	            var opt = '<tbody id="listbody"><tr class="main_trbg_tit" align="center"><td><input type="checkbox" name="checkAll" id="checkAll"></td><td>'
+	            +"部门名称</td><td>"
+				+"详细信息</td><td>"
+				+"操作</td>";
+				
+	            var length = result.length;
+	            for ( i = 0; i < length; i++) {
+	                var deptID = result[i].id; //获取部门ID
+	                var deptNAME = result[i].name;//获取部门NAME
+	                var deptREMARK = result[i].remark; //获取部门REMARK
+	                var _t = encodeURI(deptNAME); 
+	                var _tt = encodeURI(deptREMARK); 
+	                console.log("dept1="+_t);
+	                console.log("dept2="+_tt);
+	                opt = opt +'<tr id="data_'+i+'" align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">'
+	                +'<td><input type="checkbox" name="items" id="box_'+i+'" value="'+deptID+'"></td><td>'
+					+deptNAME+"</td><td>"
+					+deptREMARK+"</td>"
+					+'<td align="center" width="40px;"><a href="showUpdateDept.html?id='+deptID+'&name='+_t+'&remark='+_tt+'">'
+					+'<img title="修改" src="../images/update.gif"></a></td>';
+			      }
+	            opt+="</tbody>";
+	            $("#alldepts").html($("#alldepts").html+opt);
+	            console.log(opt);
+	    	});
+			break;
+	}
+	}
+		
+	    var allDeptDatas;
+	    /* 初始化加载函数 */
+		queryNotices("selectalldept");
+		console.log("listen前");
+		registerListener();	
+		
+		
+		function registerListener(){
+			console.log("listen");
+			setTimeout(function(){
+				$(function(){
+
+				 	   /** 获取上一次选中的部门数据 */
+				 	   var boxs  = $("input[type='checkbox'][id^='box_']");
+				 	  console.log("boxs"+boxs);
+				 	 console.log("boxs_length"+ boxs.length);
+				 	
+				 	  /** 给全选按钮绑定点击事件  */
+				    	document.getElementById("checkAll").addEventListener("click", function(){
+				    		// this是checkAll  this.checked是true
+				    		// 所有数据行的选中状态与全选的状态一致
+				    		//var boxs = document.getElementsByName('items');
+				    		for(var i=0;i<boxs.length;i++){
+								var box=boxs[i];
+								box.checked = !box.checked;
+				    		} 
+				    	}); 
+				    	
+				 	  /** 给数据行绑定鼠标覆盖以及鼠标移开事件  */
+				    	$("tr[id^='data_']").hover(function(){
+				    		$(this).css("backgroundColor","#eeccff");
+				    	},function(){
+				    		$(this).css("backgroundColor","#ffffff");
+				    	})
+				    	
+				    	
+				 	   
+				 	   //分页
+				    	goPage(1,20);
+				    })
+			},1000);
+		
+	    
+		} 
+		
+		//分页
+	var pageSize=10;//每页显示行数
+	var currentPage_=1;//当前页全局变量，用于跳转时判断是否在相同页，在就不跳，否则跳转。
+	var totalPage;//总页数
+	var totalTr;//总行数
+	 
+	//跳转页面pno第几页、每页行数psize
+	function goPage(pno,psize){
+
+		var itable = document.getElementById("alldepts");
+		var num = itable.rows.length-1;//表格所有行数(所有记录数)
+		totalTr = num;
+		pageSize = psize;//每页显示行数
+	    //总共分几页 
+		if(num/pageSize > parseInt(num/pageSize)){   
+			totalPage=parseInt(num/pageSize)+1;   
+		}else{   
+			totalPage=parseInt(num/pageSize);   
+		}   
+		var currentPage = pno;//当前页数
+		currentPage_=currentPage;
+		var startRow = (currentPage - 1) * pageSize+1; 
+		var endRow = currentPage * pageSize;
+		endRow = (endRow > num)? num : endRow;    
+	 
+		$("#listbody tr").hide();
+		$("#listbody tr").eq(0).show();
+		console.log("数据分页");
+		for(var i=startRow;i<endRow+1;i++)
+		{
+			$("#listbody tr").eq(i).show();
+		}
+		
+		document.getElementById("total_tr").innerHTML = num;
+		document.getElementById("paging").value = pageSize+"条/页";
+		document.getElementById("total_page").innerHTML = totalPage;
+		document.getElementById("startRow").innerHTML = startRow;
+		document.getElementById("endRow").innerHTML = endRow;
+		document.getElementById("currentPage").innerHTML = currentPage_;
+
+		if(currentPage>1){
+			$("#prePage").on("click",function(){
+				goPage(currentPage-1,psize);
+			}).removeClass("ban");   
+		}else{
+			$("#prePage").off("click").addClass("ban");  
+		}
+	 
+		if(currentPage<totalPage){
+			$("#nextPage").on("click",function(){
+				goPage(currentPage+1,psize);
+			}).removeClass("ban")
+		}else{
+			$("#nextPage").off("click").addClass("ban");
+		}   
+	    
+		$("#input_page").val(currentPage);
+	}
+	 
+	
+	// 检验非0的正整数
+	function check_num(str) {
+		var reg = /^\+?[1-9][0-9]*$/;
+		if (!reg.test(str)) {
+			return false;
+		}
+		return true;
+	}
+	
+	jumpPage2=function()
+	{
+		if(false == check_num($("#input_page").val()))
+		{
+			alert("请输入非零的正整数");
+		}
+		else
+		{
+			var num = parseInt($("#input_page").val());
+			//alert(num);
+			if(num != currentPage_)
+			{
+				if(num > totalPage)
+				{
+					alert("超出最大页数，请重新输入");
+				}
+				else
+				{
+					goPage(num,pageSize);
+				}
+			}
+		}
+	}
+		
 	</script>
 </head>
 <body>
@@ -85,8 +255,8 @@
 				    <table width="100%" border="0" cellpadding="0" cellspacing="0">
 					  <tr>
 					    <td class="font3">
-					    	部门名称：<input type="text" name="name">
-					    	 <input type="submit" value="搜索"/>
+					    	部门名称：<input type="text" id="title" name="title">
+					    	 <input id="selectByParam" type="submit" value="搜索"/>
 					    	<input id="delete" type="button" value="删除"/>
 					    </td>
 					  </tr>
@@ -101,7 +271,7 @@
 	  <!-- 数据展示区 -->
 	  <tr valign="top">
 	    <td height="20">
-		 <table width="100%" border="1" cellpadding="5" cellspacing="0" style="border:#c2c6cc 1px solid; border-collapse:collapse;">
+		 <table id ="alldepts" width="100%" border="1" cellpadding="5" cellspacing="0" style="border:#c2c6cc 1px solid; border-collapse:collapse;">
 		    <tbody><tr class="main_trbg_tit" align="center">
 			  <td><input type="checkbox" name="checkAll" id="checkAll"></td>
 			  <td>部门名称</td>
@@ -159,10 +329,121 @@
 		</td>
 	  </tr>
 	  <!-- 分页标签 -->
-	  <tr valign="top"><td align="center" class="font3">
-	  	 <table width="100%" align="center" style="font-size:13px;" class="digg"><tbody><tr><td style="COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; TEXT-DECORATION: none"><span class="disabled">上一页</span><span class="current">1</span><a href="#">2</a><a href="#">下一页</a>&nbsp;跳转到&nbsp;&nbsp;<input style="text-align: center;BORDER-RIGHT: #aaaadd 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #aaaadd 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #aaaadd 1px solid; COLOR: #000099; PADDING-TOP: 2px; BORDER-BOTTOM: #aaaadd 1px solid; TEXT-DECORATION: none" type="text" size="2" id="pager_jump_page_size">&nbsp;<input type="button" style="text-align: center;BORDER-RIGHT: #dedfde 1px solid; PADDING-RIGHT: 6px; BACKGROUND-POSITION: 50% bottom; BORDER-TOP: #dedfde 1px solid; PADDING-LEFT: 6px; PADDING-BOTTOM: 2px; BORDER-LEFT: #dedfde 1px solid; COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; BORDER-BOTTOM: #dedfde 1px solid; TEXT-DECORATION: none" value="确定" id="pager_jump_btn"></td></tr><tr align="center"><td style="font-size:13px;"></td></tr><tr><td style="COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; TEXT-DECORATION: none">总共<font color="red">6</font>条记录，当前显示1-4条记录。</td></tr></tbody></table>
-	  </td></tr>
+	  <tr valign="top">
+	  <td align="center" class="font3">
+	  	 <table width="100%" align="center" style="font-size:13px;" class="digg">
+	  	 <tbody>
+		  	 <tr>
+		  	 <td style="COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; TEXT-DECORATION: none">
+			  	 <span class="disabled"><a href="###" id="prePage">上一页</a></span>
+			  	 <span class="current" id="currentPage">1</span>
+			  	 <span class="disabled"><a href="###" id="nextPage">下一页</a></span>
+			  	 
+			 &nbsp;跳转到&nbsp;&nbsp;
+		  	 <input style="text-align: center;BORDER-RIGHT: #aaaadd 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #aaaadd 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #aaaadd 1px solid; COLOR: #000099; PADDING-TOP: 2px; BORDER-BOTTOM: #aaaadd 1px solid; TEXT-DECORATION: none" type="text" size="2" id="input_page">
+		  	 &nbsp;
+		  	 <input type="button" style="text-align: center;BORDER-RIGHT: #dedfde 1px solid; PADDING-RIGHT: 6px; BACKGROUND-POSITION: 50% bottom; BORDER-TOP: #dedfde 1px solid; PADDING-LEFT: 6px; PADDING-BOTTOM: 2px; BORDER-LEFT: #dedfde 1px solid; COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; BORDER-BOTTOM: #dedfde 1px solid; TEXT-DECORATION: none" value="确定" id="pager_jump_btn" onclick="jumpPage2()">
+		  	 </td>
+		  	 </tr>
+		  	 <tr align="center">
+		  	 	<td style="font-size:13px;"></td>
+		  	 </tr>
+		  	 <tr>
+		  	 	<td style="COLOR: #0061de; MARGIN-RIGHT: 3px; PADDING-TOP: 2px; TEXT-DECORATION: none">
+		  	 	总共<font color="red"><span id="total_tr"></span></font>条记录，当前显示<span id="startRow"></span>-<span id="endRow"></span>条记录，
+		  	 	<input id="paging" type="text" value="" readonly="true" style="text-align: center;BORDER-RIGHT: #aaaadd 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #aaaadd 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #aaaadd 1px solid; COLOR: #000099; PADDING-TOP: 2px; BORDER-BOTTOM: #aaaadd 1px solid; TEXT-DECORATION: none"  size="2" >
+		  	 	&nbsp;
+		  	 	共<span id="total_page"></span>页。
+
+		  	 	</td>
+		  	 </tr>
+	  	 </tbody>
+	  	 </table>
+	  </td>
+	  </tr>
 	</table>
 	<div style="height:10px;"></div>
 </body>
+
+<script>
+	
+	var boxs;
+	setTimeout(function(){
+		boxs = $("input[type='checkbox'][id^='box_']");
+		
+		},1000);
+		
+		
+	
+/** 搜索部门绑定点击事件 */
+   	$("#selectByParam").click(function(){
+   		console.log("点击查找按钮");
+	var title = $("#title");
+	var content = $("#content");
+	var msg = "";
+	if ($.trim(title.val()) == ""){
+		msg = "部门名称不能为空！";
+		title.focus();
+	}
+	//else if($.trim(title.val()).length <= 2){
+	//	msg = "请输入两个字符以上的标题！";
+	//	title.focus();
+	//}
+	
+	if (msg != ""){
+		$.ligerDialog.error(msg);
+		return false;
+	}else{
+		console.log("内容合法、查找有参数");
+		queryNotices("selectdept");
+		registerListener();
+		return true;
+	}
+   });
+
+   	/** 删除部门绑定点击事件 */
+   	$("#delete").click(function(){
+	   /** 获取到部门选中的复选框  */
+	   boxs = $("input[type='checkbox'][id^='box_']");
+	   console.log(boxs);
+	   var checkedBoxs = boxs.filter(":checked");
+	   console.log(checkedBoxs);
+	   if(checkedBoxs.length < 1){
+		   $.ligerDialog.error("请选择一个需要删除的部门！");
+	   }else{
+		   /** 得到部门选中的所有的需要删除的ids */
+		   var ids = checkedBoxs.map(function(){
+			   return this.value;
+		   })
+		   $.ligerDialog.confirm("确认要删除吗?","删除部门",function(r){
+			   if(r){
+				  ids = $.makeArray(ids);
+				  $.ajax({
+				    async : false,
+				    cache : false,
+				    type : 'POST',
+                url: "/dept/deletedept",
+                data: {ids:ids},
+                type: "Post",
+                dataType: "json",
+                traditional:true,
+                error : function() {
+                	  alert('删除失败 ');
+                	 },
+                success: function (data) {
+                	alert(data);
+                    if (data > 0) {
+                    	console.log("重新刷新页面");
+                    	window.location.reload();
+                    } else {
+                        alter("删除失败");
+                    }
+                }
+				  }); 
+			   }
+		   });
+	   }
+   })
+</script>
+
 </html>

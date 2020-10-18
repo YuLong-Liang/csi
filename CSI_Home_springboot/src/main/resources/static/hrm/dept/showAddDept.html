@@ -20,7 +20,8 @@
 	<script src="../js/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
 	<link href="../css/pager.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript">
-	 function submit(){
+	submit=function(){
+		
 	    	/** 部门表单提交 */
 			//$("#deptForm").submit(function(){
 				var name = $("#name");
@@ -37,13 +38,44 @@
 					$.ligerDialog.error(msg);
 					return false;
 				}else{
+					$.ajax({
+					    async : false,
+					    cache : false,
+					    type : 'POST',
+		                url: "/dept/insertdept",
+		                data: {
+		                	name:name.val(),
+		                	remark:remark.val(),
+		                	},
+		                type: "Post",
+		                dataType: "json",
+		                traditional:true,
+		                error : function() {
+		                	  alert('更新失败 ');
+		                	 },
+		                success: function (data) {
+		                	alert(data);
+		                    if (data > 0) {
+		                    	console.log("重新刷新页面");
+		                    	parent.location.reload();
+		                    } else {
+		                        alter("更新失败");
+		                    }
+		                }
+					  }); 
+					
+					
 					return true;
 				}
 				//$("#deptForm").submit();
 			//});
 	    }
 		
+	reset = function (){
+		document.getElementById("name").value="";
 
+		document.getElementById("remark").value="";
+	}
 	</script>
 </head>
 <body>
@@ -73,7 +105,9 @@
 		    </td></tr>
 			<tr><td class="main_tdbor"></td></tr>
 			
-			<tr><td align="left" class="fftd"><input type="button" onclick="submit()" value="添加 ">&nbsp;&nbsp;<input type="reset" value="取消 "></td></tr>
+			<tr><td align="left" class="fftd">
+			<input type="button" onclick="submit()" value="添加 ">&nbsp;&nbsp;
+			<input type="reset" onclick="reset()" value="重置"></td></tr>
 		  </table>
 		 
 	</td>

@@ -20,7 +20,22 @@
 	<script src="../js/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
 	<link href="../css/pager.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript">
-	function submit(){
+	//获取url 参数getQueryVariable("noticeID")
+	function getQueryVariable(variable)
+	{
+	       var query = window.location.search.substring(1);
+	       var vars = query.split("&");
+	       for (var i=0;i<vars.length;i++) {
+	               var pair = vars[i].split("=");
+	               if(pair[0] == variable){return pair[1];}
+	       }
+	       return(false);
+	}
+	
+	
+ 	
+	
+	submit = function (){
 	    	/** 部门表单提交 */
 			//$("#deptForm").submit(function(){
 				var name = $("#name");
@@ -37,13 +52,54 @@
 					$.ligerDialog.error(msg);
 					return false;
 				}else{
+					$.ajax({
+					    async : false,
+					    cache : false,
+					    type : 'POST',
+		                url: "/dept/updatedept",
+		                data: {
+		                	id:getQueryVariable("id"),
+		                	name:name.val(),
+		                	remark:remark.val(),
+		                	},
+		                type: "Post",
+		                dataType: "json",
+		                traditional:true,
+		                error : function() {
+		                	  alert('更新失败 ');
+		                	 },
+		                success: function (data) {
+		                	alert(data);
+		                    if (data > 0) {
+		                    	console.log("重新刷新页面");
+		                    	parent.location.reload();
+		                    } else {
+		                        alter("更新失败");
+		                    }
+		                }
+					  }); 
 					return true;
 				}
 				//$("#deptForm").submit();
 			//});
 	    }
-		
+	
+	reset = function (){
+		document.getElementById("name").value=_t;
 
+		document.getElementById("remark").value=_tt;
+	}
+		
+	 function getthename(){
+		 var name = getQueryVariable("name");
+		 return name;
+	 }
+	 
+	 function gettheremark(){
+		 var remark = getQueryVariable("remark");
+		 return remark;
+	 }
+	 
 	</script>
 </head>
 <body>
@@ -66,15 +122,15 @@
 		    <tr><td class="font3 fftd">
 		    	<table>
 		    		<tr>
-		    			<td class="font3 fftd">部门名称：<input type="text" name="name" id="name" size="20" value="技术部"/></td>
-		    			<td class="font3 fftd">详细描述：<input type="text" name="remark" id="remark" size="20" value="技术部"/></td>
+		    			<td class="font3 fftd">部门名称：<input type="text" name="name" id="name" size="20"/></td>
+		    			<td class="font3 fftd">详细描述：<input type="text" name="remark" id="remark" size="20"/></td>
 		    		</tr>
 		    			
 		    	</table>
 		    </td></tr>
 			<tr><td class="main_tdbor"></td></tr>
 			
-			<tr><td align="left" class="fftd"><input type="button" onclick="submit()" value="修改">&nbsp;&nbsp;<input type="reset" value="取消 "></td></tr>
+			<tr><td align="left" class="fftd"><input type="button" onclick="submit()" value="修改">&nbsp;&nbsp;<input type="reset" onclick="reset()" value="重置"></td></tr>
 		  </table>
 		
 	</td>
@@ -82,4 +138,22 @@
 </table>
 <div style="height:10px;"></div>
 </body>
+<script>
+var name = getQueryVariable("name");
+var remark = getQueryVariable("remark");
+//$("#name").value = name;
+//$("#remark").value = remark;
+//$("#name").attr("value",name);
+//$("#remark").attr("value",remark);
+
+var _t = decodeURI(name);
+var _tt = decodeURI(remark);
+console.log("up1="+_t);
+console.log("up2="+_tt);
+document.getElementById("name").value=_t;
+
+document.getElementById("remark").value=_tt;
+
+
+</script>
 </html>

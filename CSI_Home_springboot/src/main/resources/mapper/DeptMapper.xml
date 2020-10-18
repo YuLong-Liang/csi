@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间最好是报名加上类名 -->
+<mapper namespace="com.chinasoft.mapper.DeptMapper">
+	
+	<!--开启二级缓存  -
+	<cache/>
+		
+	-登录的功能  -
+	<select id="login" parameterType="user" resultType="user">
+		select username,password as pwd,phone,address,email,c_id
+		 from user where  username=#{username} and password=#{password}
+	</select>
+		
+	-查询id为1的用户信息 -
+	<select id="selectUser" resultType="com.chinasoft.pojo.User">
+		select username,password,phone,address,email,c_id from user where id =
+	</select>
+
+	-查询所有的用户信息 -
+	<select id="selectAllUser" resultType="user">
+		select * from user
+	</select>
+
+	-添加用户 -
+	<insert id="addUser">
+		insert into
+		user(username,password,phone,address,email,c_id)
+		values('admin1','222222','135222222','重庆南山','22222@qq.com',1);
+	</insert>
+
+
+	-添加用户有参数的 -
+	<insert id="addUserByParameter" parameterType="com.chinasoft.pojo.User">
+		insert into
+		user(username,password,phone,address,email,c_id)
+		values(#{username},#{password},#{phone},#{address},#{email},#{c_id});
+	</insert>
+
+	-查询一个用户有参数的 -
+	- <select id="selectUserByParameter" resultType="User" parameterType="int"> 
+		select * from user where id = #{id} </select> -
+
+	- 排序的功能 -
+	<select id="selectUserOrder" parameterType="java.lang.String"
+		resultMap="selectUserMap">
+		select * from user order by #{column}
+	</select>
+
+	<resultMap type="user" id="selectUserMap">
+
+		<result column="password" property="pwd" />
+	</resultMap>
+
+
+
+	- ①多对一的嵌套结果 <select id="selectOnAll" parameterType="int" resultMap="UserOneAll"> 
+		select * from user,grade where user.c_id=grade.id and user.id=#{id} </select> 
+		<resultMap type="user" id="UserOneAll"> <id column="id" property="id"/> <result 
+		column="username" property="username"/> <result column="password" property="pwd"/> 
+		<result column="phone" property="phone"/> <result column="address" property="address"/> 
+		<result column="email" property="email"/> <result column="c_id" property="c_id"/> 
+		<association property="grade" javaType="grade"> <result column="c_name" property="c_name"/> 
+		<result column="c_teacher" property="c_teacher"/> </association> </resultMap> -
+
+	<select id="selectOnAll" parameterType="int" resultMap="UserOneAll">
+		select *
+		from user
+		where id =#{id}
+
+	</select>
+	<resultMap type="user" id="UserOneAll">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="pwd" />
+		<result column="phone" property="phone" />
+		<result column="address" property="address" />
+		<result column="email" property="email" />
+		<result column="c_id" property="c_id" />
+		<association property="grade" javaType="grade" column="c_id"
+			select="GradeAll">
+
+		</association>
+
+	</resultMap>
+
+	<select id="GradeAll" resultMap="GradeOneAll" parameterType="int">
+		select * from grade where id =#{id}
+	</select>
+	<resultMap type="grade" id="GradeOneAll">
+		<id column="id" property="id" />
+		<result column="c_name" property="c_name" />
+		<result column="c_teacher" property="c_teacher" />
+	</resultMap>
+	-->
+	
+	
+	
+	<!--查询所有的部门信息 -->
+	<select id="selectalldept" resultType="com.chinasoft.pojo.Dept">
+		select * from dept
+	</select>
+	
+	<!--查询name为?的部门信息 -->
+	<select id="selectdept" resultType="com.chinasoft.pojo.Dept" parameterType="String">
+		select * from dept where name = #{name}
+	</select>
+	
+	<!--修改id为?的部门信息 -->
+	<update id="updatedept" parameterType="com.chinasoft.pojo.Dept">
+		update dept set name= #{dept.name},remark= #{dept.remark} where id= #{dept.id}
+	</update>
+	
+	<!--删除id为?的部门信息 -->
+	<delete id="deletedept" parameterType="long">
+		delete from dept where id in
+		<foreach item="id" collection="ids" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<!--添加id为?的部门信息 -->
+	<insert id="insertdept" useGeneratedKeys="true" keyProperty="id" parameterType="com.chinasoft.pojo.Dept">
+		insert into dept(name,remark) values(#{dept.name},#{dept.remark})
+	</insert>
+</mapper>
