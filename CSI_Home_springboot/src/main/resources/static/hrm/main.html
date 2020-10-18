@@ -33,13 +33,10 @@
 		    	var str=window.location.href;//取地址参数部分
 		    	var url = str.split("?")[1];
 		    	var id = url.split("id=")[1].split("&")[0];
-		    	console.log("id="+id);
+		    	
 		    	var loginname = url.split("loginname=")[1].split("&")[0];
-		    	console.log("username=="+loginname);
 		    	var password = url.split("password=")[1].split("&")[0];
-		    	$(function(){
-					
-			 	 }); 
+		    	
 
 		</script>
 	
@@ -82,7 +79,7 @@
 				</li>
 		
 				<li>
-					<a class="menu-icons" title="修改密码" data-search-open="" data-title="修改密码" modal-toggle="modal" data-href="editPassword/editPassword.html" data-width="780" data-height="300">
+					<a class="menu-icons" title="修改密码" data-search-open="" data-title="修改密码" modal-toggle="modal" data-href="editPassword/editPassword.html?password="+password data-width="780" data-height="300">
 						<em class="fa fa-gear main-op" style="font-size:13px">修改密码</em>
 					</a>
 				</li>

@@ -37,6 +37,33 @@ function submit(){
 					$.ligerDialog.error(msg);
 					return false;
 				}else{
+					$.ajax({
+					    async : false,
+					    cache : false,
+					    type : 'POST',
+		                url: "/job/insertjob",
+		                data: {
+		                	name:name.val(),
+		                	remark:remark.val(),
+		                	},
+		                type: "Post",
+		                dataType: "json",
+		                traditional:true,
+		                error : function() {
+		                	  alert('更新失败 ');
+		                	 },
+		                success: function (data) {
+		                //	alert(data);
+		                    if (data > 0) {
+		                    	console.log("重新刷新页面");
+		                    	location.reload();
+		                    } else {
+		                        alert("更新失败");
+		                    }
+		                }
+					  }); 
+					
+					
 					return true;
 				}
 				//$("#jobForm").submit();

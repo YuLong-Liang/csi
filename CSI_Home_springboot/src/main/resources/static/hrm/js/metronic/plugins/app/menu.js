@@ -4,6 +4,7 @@ var menus = [];
 var menuParent={};
 var bigDataMenus = null;
 var menuUserName="";
+
 /**
  * 加载左侧菜单1
  */

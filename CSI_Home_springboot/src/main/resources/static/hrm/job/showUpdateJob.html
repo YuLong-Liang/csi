@@ -20,14 +20,28 @@
 	<script src="../js/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
 	<link href="../css/pager.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript">
-	 function submit(){
-	    	/** 职位表单提交 */
+	function getQueryVariable(variable)
+	{
+	       var query = window.location.search.substring(1);
+	       var vars = query.split("&");
+	       for (var i=0;i<vars.length;i++) {
+	               var pair = vars[i].split("=");
+	               if(pair[0] == variable){return pair[1];}
+	       }
+	       return(false);
+	}
+	
+	
+ 	
+	
+	submit = function (){
+	    	/** 部门表单提交 */
 			//$("#jobForm").submit(function(){
 				var name = $("#name");
 				var remark = $("#remark");
 				var msg = "";
 				if ($.trim(name.val()) == ""){
-					msg = "职位名称不能为空！";
+					msg = "部门名称不能为空！";
 					name.focus();
 				}else if ($.trim(remark.val()) == ""){
 					msg = "详细描述不能为空！";
@@ -37,11 +51,47 @@
 					$.ligerDialog.error(msg);
 					return false;
 				}else{
+					$.ajax({
+					    async : false,
+					    cache : false,
+					    type : 'POST',
+		                url: "/job/updatejob",
+		                data: {
+		                	id:getQueryVariable("id"),
+		                	name:name.val(),
+		                	remark:remark.val(),
+		                	},
+		                type: "Post",
+		                dataType: "json",
+		                traditional:true,
+		                error : function() {
+		                	  alert('更新失败 ');
+		                	 },
+		                success: function (data) {
+		                	//alert(data);
+		                    if (data > 0) {
+		                    	console.log("重新刷新页面");
+		                    	location.reload();
+		                    } else {
+		                        altert("更新失败");
+		                    }
+		                }
+					  }); 
 					return true;
 				}
 				//$("#jobForm").submit();
 			//});
 	    }
+		
+	 function getthename(){
+		 var name = getQueryVariable("name");
+		 return name;
+	 }
+	 
+	 function gettheremark(){
+		 var remark = getQueryVariable("remark");
+		 return remark;
+	 }
 		
 
 	</script>
@@ -82,4 +132,22 @@
 </table>
 <div style="height:10px;"></div>
 </body>
+<script>
+var name = getQueryVariable("name");
+var remark = getQueryVariable("remark");
+//$("#name").value = name;
+//$("#remark").value = remark;
+//$("#name").attr("value",name);
+//$("#remark").attr("value",remark);
+
+var _t = decodeURI(name);
+var _tt = decodeURI(remark);
+console.log("up1="+_t);
+console.log("up2="+_tt);
+document.getElementById("name").value=_t;
+
+document.getElementById("remark").value=_tt;
+
+
+</script>
 </html>

@@ -20,7 +20,47 @@
 	<script src="../js/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
 	<link href="../css/pager.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript">
+
+	function queryNotices(){
+	
+		$.get("/job/selectalljob",function(result,status){
+			data=result;
+            var opt = '<tbody><tr class="main_trbg_tit" align="center"><td><input type="checkbox" name="checkAll" id="checkAll"></td><td>'
+            +"职位名称</td><td>"
+			+"详细信息</td><td>"
+			+"操作</td>";
+			
+            var length = result.length;
+            for ( i = 0; i < length; i++) {
+                var jobID = result[i].id; //获取jobID
+                var jobNAME = result[i].name;//获取jobNAME
+                var jobREMARK = result[i].remark; //获jobREMARK
+                var _t = encodeURI(jobNAME); 
+                var _tt = encodeURI(jobREMARK); 
+                console.log("job1="+_t);
+                console.log("job2="+_tt);
+                opt = opt +'<tr align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">'
+                +'<td><input type="checkbox" id="box_'+i+'" value="'+jobID+'"></td><td>' 
+				+jobNAME+"</td><td>"
+				+jobREMARK+"</td>"
+				+'<td align="center" width="40px;"><a href="showUpdateJob.html?id='+jobID+'&name='+_t+'&remark='+_tt+'">'
+				+'<img title="修改" src="../images/update.gif"></a></td>';
+		      }
+            opt+="</tbody>";
+            $("#alljobs").html($("#alljobs").html+opt);
+            console.log(opt);
+    	});
+	}	
+	
+
+	   
+
+
 		$(function(){
+			
+			var datass;
+			/* 初始化加载函数 */
+			queryNotices(); 
 	 	   /** 获取上一次选中的部门数据 */
 	 	   var boxs  = $("input[type='checkbox'][id^='box_']");
 	 	   
@@ -40,26 +80,75 @@
 	    	
 	    	
 	 	   /** 删除员工绑定点击事件 */
-	 	   $("#delete").click(function(){
-	 		   /** 获取到用户选中的复选框  */
+	 	/*   $("#delete").click(function(){
+	 		   
+	 		   /** 获取到用户选中的复选框  
 	 		   var checkedBoxs = boxs.filter(":checked");
 	 		   if(checkedBoxs.length < 1){
 	 			   $.ligerDialog.error("请选择一个需要删除的职位！");
 	 		   }else{
 	 			   /** 得到用户选中的所有的需要删除的ids */
-	 			   var ids = checkedBoxs.map(function(){
-	 				   return this.value;
-	 			   })
+	 	//		   var ids = checkedBoxs.map(function(){
+	 	//			   return this.value;
+	 	//		   })
 	 			   
-	 			   $.ligerDialog.confirm("确认要删除吗?","删除职位",function(r){
-	 				   if(r){
+	 	//		   $.ligerDialog.confirm("确认要删除吗?","删除职位",function(r){
+	 	//			   if(r){
 	 					   // alert("删除："+ids.get());
 	 					   // 发送请求
 	 					  // window.location = "${ctx }/job/removeJob?ids=" + ids.get();
-	 				   }
-	 			   });
-	 		   }
-	 	   })
+	 //				   }
+	 		//	   });
+	 //		   }
+	 	//   })
+	 	   
+	 	   $("#searchjob").click(function(){
+		   var name =  document.getElementById("name").value;
+		
+		
+		   $.get("/job/selectjob?name="+name,function(result,status){
+				data=result;
+	            var opt = '<tbody><tr class="main_trbg_tit" align="center"><td><input type="checkbox" name="checkAll" id="checkAll"></td><td>'
+	            +"职位名称</td><td>"
+				+"详细信息</td><td>"
+				+"操作</td>";
+
+		
+     var length = result.length;
+     for ( i = 0; i < length; i++) {
+         var jobID = result[i].id; //获取jobID
+         var jobNAME = result[i].name;//获取jobNAME
+         var jobREMARK = result[i].remark; //获jobREMARK
+         var _t = encodeURI(jobNAME); 
+         var _tt = encodeURI(jobREMARK); 
+         console.log("job1="+_t);
+         console.log("job2="+_tt);
+         opt = opt +'<tr align="center" class="main_trbg" style="background-color: rgb(255, 255, 255);">'
+         +'<td><input type="checkbox" id="box_'+i+'" value="'+jobID+'"></td><td>' 
+			+jobNAME+"</td><td>"
+			+jobREMARK+"</td>"
+			+'<td align="center" width="40px;"><a href="showUpdateJob.html?id='+jobID+'&name='+_t+'&remark='+_tt+'">'
+			+'<img title="修改" src="../images/update.gif"></a></td>';
+	      }
+     opt+="</tbody>";
+     $("#alljobs").html($("#alljobs").html+opt);
+     console.log(opt);
+	  }); 
+	})
+	 	   
+	 $("#delete").click(function(){
+		
+		 var name =  document.getElementById("name").value;
+		 console.log(name);
+		   $.get("/job/deletejob?name="+name,function(result,status){
+     			alert("删除成功");
+     			location.reload();
+	  }); 
+	})
+	
+	
+	
+	
 	    })
 	</script>
 </head>
@@ -85,8 +174,8 @@
 				    <table width="100%" border="0" cellpadding="0" cellspacing="0">
 					  <tr>
 					    <td class="font3">
-					    	职位名称：<input type="text" name="name">
-					    	 <input type="submit" value="搜索"/>
+					    	职位名称：<input type="text" id="name" >
+					    	 <input id="searchjob"  type="button" value="搜索"/>
 					    	<input id="delete" type="button" value="删除"/>
 					    </td>
 					  </tr>
@@ -101,7 +190,7 @@
 	  <!-- 数据展示区 -->
 	  <tr valign="top">
 	    <td height="20">
-		  <table width="100%" border="1" cellpadding="5" cellspacing="0" style="border:#c2c6cc 1px solid; border-collapse:collapse;">
+		  <table id ="alljobs" width="100%" border="1" cellpadding="5" cellspacing="0" style="border:#c2c6cc 1px solid; border-collapse:collapse;">
 		    <tbody><tr class="main_trbg_tit" align="center">
 			  <td><input type="checkbox" name="checkAll" id="checkAll"></td>
 			  <td>职位名称</td>
@@ -149,7 +238,7 @@
 					 <td>Java高级开发工程师</td>
 					  <td>Java高级开发工程师</td>
 					  
-					 <td align="center" width="40px;"><a href="showUpdateJob.html">
+					 <td align="center" width="40px;"><a href="loginForm.html">
 							<img title="修改" src="../images/update.gif"></a>
 					  </td>
 					   

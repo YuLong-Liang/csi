@@ -1,3 +1,4 @@
+
 package com.chinasoft.controller;
 
 import java.text.SimpleDateFormat;
@@ -145,3 +146,4 @@ public class UserController {
 	}
 
 }
+
