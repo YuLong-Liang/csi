@@ -1,6 +1,9 @@
+
 package com.chinasoft.controller;
 
 import java.text.SimpleDateFormat;
+
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +28,6 @@ import com.chinasoft.pojo.User;
 import com.chinasoft.pojo.notice;
 import com.chinasoft.service.impl.NoticeMapperServiceImpl;
 import com.chinasoft.service.impl.UserMapperServiceImpl;
-import com.jayway.jsonpath.internal.Path;
 
 
 import ch.qos.logback.core.status.Status;
@@ -117,15 +118,14 @@ public class UserController {
 		
 	}
 	@RequestMapping("/deleteUser")
-	@ResponseBody
-    public int deleteUser(@RequestBody Long[] ids){ 
-        
+    public Map<String,Object> deleteUser(@RequestBody Long[] ids){ 
+        Map<String,Object> param = new HashMap<String, Object>(); 
         for (Long id : ids) {
         	service.deleteUser(id);
 		}
         System.out.println(ids);
-       
-        return 1; 
+        param.put("type","ids"); 
+        return param; 
     } 
 	
 	public long getUId() {
@@ -146,3 +146,4 @@ public class UserController {
 	}
 
 }
+

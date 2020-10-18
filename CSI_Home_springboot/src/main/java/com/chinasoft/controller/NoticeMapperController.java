@@ -80,9 +80,9 @@ public class NoticeMapperController {
 
 	@RequestMapping("/addNotice")
 	@ResponseBody
-	public int addNotice(@Param("TITLE")String TITLE
+	public long addNotice(@Param("TITLE")String TITLE
 			,@Param("CONTENT")String CONTENT
-			,@Param("USER_ID")int USER_ID) {
+			,@Param("USER_ID")long USER_ID) {
 		Date data= new Date();
 		Timestamp timestamp=new Timestamp(new Date().getTime()); 
 		String timeStr= timestamp .toString() 
@@ -110,7 +110,7 @@ public class NoticeMapperController {
 	
 	@RequestMapping("/deleteNoticeByNotice")
 	@ResponseBody
-	public long deleteNoticeByNotice(@Param("ID")int ID) {
+	public long deleteNoticeByNotice(@Param("ID")long ID) {
 		notice notice = new notice(ID,"2","1",Timestamp.valueOf("2020-10-14 22:54:25"),2);
 		return service.deleteNoticeByNotice(notice);
 	}

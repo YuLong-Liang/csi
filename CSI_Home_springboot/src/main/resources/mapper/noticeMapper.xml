@@ -49,7 +49,7 @@
 	    
 	    
 	     <!-- 批量删除记录信息 -->
-	    <delete id="batchDeleteNotices" parameterType="int">
+	    <delete id="batchDeleteNotices" parameterType="long">
 	        delete from notice_inf where ID in
 	        <foreach item="ID" collection="IDs" open="(" separator="," close=")">
 	            #{ID}

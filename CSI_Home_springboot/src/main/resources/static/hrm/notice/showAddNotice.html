@@ -22,6 +22,7 @@
 		<script type="text/javascript">
 		
 		//获取url 参数getQueryVariable("noticeID")
+		
 		function getQueryVariable(variable)
 		{
 		       var query = window.location.search.substring(1);
@@ -33,7 +34,9 @@
 		       return(false);
 		}
 		
-	submit=function (){
+		var current_user_id = getQueryVariable("id");
+		var currnet_loginname = getQueryVariable("loginname");
+		submit=function (){
 	        
         	var title = $("#title");
         	var content = $("#content");
@@ -61,10 +64,10 @@
 				    type : 'POST',
 	                url: "/notice/addNotice",
 	                data: {
-	                	ID:getQueryVariable("noticeID"),
+	                	//ID:getQueryVariable("noticeID"),
 	                	TITLE:title.val(),
 	                	CONTENT:content.val(),
-	                	USER_ID:1//getQueryVariable("USER_ID")
+	                	USER_ID:current_user_id//getQueryVariable("USER_ID")
 	                	},
 	                type: "Post",
 	                dataType: "json",

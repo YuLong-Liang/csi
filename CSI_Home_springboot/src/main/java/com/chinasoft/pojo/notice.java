@@ -4,18 +4,13 @@ import java.sql.Timestamp;
 
 public class notice {
 	
-	private int ID;
+	private long ID;
 	private String TITLE;
     private String CONTENT;
     private Timestamp CREATE_DATE;
-    private int USER_ID;
+    private long USER_ID;
     
-	public int getID() {
-		return ID;
-	}
-	public void setID(int iD) {
-		ID = iD;
-	}
+	
 	public String getTITLE() {
 		return TITLE;
 	}
@@ -34,10 +29,19 @@ public class notice {
 	public void setCREATE_DATE(Timestamp cREATE_DATE) {
 		CREATE_DATE = cREATE_DATE;
 	}
-	public int getUSER_ID() {
+	
+	
+	
+	public long getID() {
+		return ID;
+	}
+	public void setID(long iD) {
+		ID = iD;
+	}
+	public long getUSER_ID() {
 		return USER_ID;
 	}
-	public void setUSER_ID(int uSER_ID) {
+	public void setUSER_ID(long uSER_ID) {
 		USER_ID = uSER_ID;
 	}
 	@Override
@@ -45,7 +49,6 @@ public class notice {
 		return "notice [ID=" + ID + ", TITLE=" + TITLE + ", CONTENT=" + CONTENT + ", CREATE_DATE=" + CREATE_DATE
 				+ ", USER_ID=" + USER_ID + "]";
 	}
-	
 	public notice() {
 		super();
 	}
@@ -56,20 +59,14 @@ public class notice {
 		TITLE = tITLE;
 		CONTENT = cONTENT;
 	}
-	public notice(String tITLE, String cONTENT, Timestamp cREATE_DATE, int uSER_ID) {
+	public notice(String tITLE, String cONTENT, Timestamp cREATE_DATE, long uSER_ID) {
 		super();
 		TITLE = tITLE;
 		CONTENT = cONTENT;
 		CREATE_DATE = cREATE_DATE;
 		USER_ID = uSER_ID;
 	}
-	
-	
-	public notice(int uSER_ID) {
-		super();
-		USER_ID = uSER_ID;
-	}
-	public notice(int iD, String tITLE, String cONTENT, Timestamp cREATE_DATE, int uSER_ID) {
+	public notice(long iD, String tITLE, String cONTENT, Timestamp cREATE_DATE, long uSER_ID) {
 		super();
 		ID = iD;
 		TITLE = tITLE;
@@ -77,6 +74,13 @@ public class notice {
 		CREATE_DATE = cREATE_DATE;
 		USER_ID = uSER_ID;
 	}
+	public notice(long iD) {
+		super();
+		ID = iD;
+	}
+	
+	
+	
 		
 	
 	
