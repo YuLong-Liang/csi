@@ -4,7 +4,7 @@ var menus = [];
 var menuParent={};
 var bigDataMenus = null;
 var menuUserName="";
-alert(id);
+
 /**
  * 加载左侧菜单1
  */
