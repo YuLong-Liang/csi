@@ -1,13 +1,13 @@
 package com.chinasoft.controller;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +21,6 @@ import com.chinasoft.pojo.User;
 import com.chinasoft.pojo.notice;
 import com.chinasoft.service.impl.NoticeMapperServiceImpl;
 import com.chinasoft.service.impl.UserMapperServiceImpl;
-import com.jayway.jsonpath.internal.Path;
 
 
 import ch.qos.logback.core.status.Status;

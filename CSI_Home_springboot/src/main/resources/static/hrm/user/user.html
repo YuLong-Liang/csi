@@ -23,6 +23,7 @@
 		function queryUsers(){
 
 		$.get("/user/selectPreUser",function(result){
+			console.log("返回几条："+result.length);
             var opt = '<tbody><tr class="main_trbg_tit" align="center"><td><input type="checkbox" name="checkAll" id="checkAll" value="0"></td><td>'
             +"登录名</td><td>"
 			+"密码</td><td>"
@@ -113,6 +114,8 @@
                             }
                          
                           });
+                                             
+                         
                          
 
 	 				   }
