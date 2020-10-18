@@ -117,14 +117,15 @@ public class UserController {
 		
 	}
 	@RequestMapping("/deleteUser")
-    public Map<String,Object> deleteUser(@RequestBody Long[] ids){ 
-        Map<String,Object> param = new HashMap<String, Object>(); 
+	@ResponseBody
+    public int deleteUser(@RequestBody Long[] ids){ 
+        
         for (Long id : ids) {
         	service.deleteUser(id);
 		}
         System.out.println(ids);
-        param.put("type","ids"); 
-        return param; 
+       
+        return 1; 
     } 
 	
 	public long getUId() {
