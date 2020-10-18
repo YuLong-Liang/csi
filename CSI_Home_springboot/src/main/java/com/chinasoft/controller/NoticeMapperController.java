@@ -82,7 +82,7 @@ public class NoticeMapperController {
 	@ResponseBody
 	public long addNotice(@Param("TITLE")String TITLE
 			,@Param("CONTENT")String CONTENT
-			,@Param("USER_ID")int USER_ID) {
+			,@Param("USER_ID")long USER_ID) {
 		Date data= new Date();
 		Timestamp timestamp=new Timestamp(new Date().getTime()); 
 		String timeStr= timestamp .toString() 
@@ -118,7 +118,7 @@ public class NoticeMapperController {
 	@RequestMapping("/batchDeleteNotices")
 	@ResponseBody
 	public long batchDeleteNotices(@Param("IDs")String[] IDs) {
-		System.out.println(IDs);
+		System.out.println("ids="+IDs);
 		return service.batchDeleteNotices(IDs);
 	}
 	

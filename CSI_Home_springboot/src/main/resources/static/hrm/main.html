@@ -23,6 +23,25 @@
 		<link rel="stylesheet" href="js/metronic/plugins/cover.css" />
 		<link rel="stylesheet" href="js/metronic/plugins/step.css" />
 		<link rel="stylesheet" href="js/metronic/plugins/tabs/tabs.css" />
+		<script type="text/javascript">
+		    /** 文档加载完成后立即执行的方法 */
+		    // var weeks = new Array();
+			/* var g = "I'm here";
+			var id=""; */
+
+		    	
+		    	var str=window.location.href;//取地址参数部分
+		    	var url = str.split("?")[1];
+		    	var id = url.split("id=")[1].split("&")[0];
+		    	console.log("id="+id);
+		    	var loginname = url.split("loginname=")[1].split("&")[0];
+		    	console.log("username=="+loginname);
+		    	var password = url.split("password=")[1].split("&")[0];
+		    	$(function(){
+					
+			 	 }); 
+
+		</script>
 	
 	</head>
 
@@ -57,7 +76,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li>
 					<a>
-						<span class="user-name-csdc">欢迎登录：sjm</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<span class="user-name-csdc" id="welcomename">欢迎登录：sjm</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<img src="images/StatBar_time.gif">&nbsp;&nbsp;<span id="nowTime"></span>
 					</a>
 				</li>
@@ -105,6 +124,7 @@
 			
 		</div>
 		
+		
 		<script src="js/metronic/plugins/sidebar/sidebar.js"></script>
 		<script src="js/metronic/plugins/jquery/dist/jquery.js"></script>
 		<script src="js/metronic/plugins/jquery.form/jquery.form.min.js"></script>
@@ -122,18 +142,19 @@
 		<script src="js/metronic/plugins/app/menu.js"></script>
 		<script src="js/metronic/plugins/common/autoheight.js"></script>
 		<script type="text/javascript" src="js/fkjava_timer.js"></script>
-	<script type="text/javascript">
+		
+		<script type="text/javascript">
 		    /** 文档加载完成后立即执行的方法 */
 		    // var weeks = new Array();
-			
-		    $(function(){
-		    	$("#nowTime").runTimer();
-		
-			})
-			
-		    
-		    
+			/* var g = "I'm here";
+			var id=""; */
+
+		    	$(function(){
+		    		$("#welcomename").html("欢迎登入："+loginname);
+			 	 }); 
+
 		</script>
+		
 	</body>
 
 </html>

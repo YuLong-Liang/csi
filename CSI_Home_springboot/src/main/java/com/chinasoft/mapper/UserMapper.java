@@ -18,4 +18,6 @@ public interface UserMapper {
 	void updateUser(User user);
 	
 	void deleteUser(long id);
+	
+	User login(@Param("loginname")String loginname,@Param("password")String password);
 }

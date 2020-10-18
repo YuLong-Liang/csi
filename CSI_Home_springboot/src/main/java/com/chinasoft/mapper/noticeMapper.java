@@ -23,5 +23,5 @@ public interface noticeMapper {
 //	返回被影响条数
 	public long deleteNoticeByNotice(@Param("notice")notice notice);
 	
-	public long batchDeleteNotices(String[] IDs);
+	public long batchDeleteNotices(@Param("IDs")String[] IDs);
 }
